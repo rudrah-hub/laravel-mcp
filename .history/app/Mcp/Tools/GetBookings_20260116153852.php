@@ -6,35 +6,26 @@ use App\Mcp\Tool;
 use App\Models\Booking;
 use Illuminate\Support\Facades\Validator;
 
-class Book extends Tool
+class GetBookings extends Tool
 {
     public function name(): string
     {
-        return 'create_booking';
+        return 'get_bookings';
     }
 
     public function description(): string
     {
-        return 'Create a new booking';
+        return 'Get recent bookings with optional filters';
     }
 
     public function inputSchema(): array
     {
         return [
             'type' => 'object',
-            'required' => [
-                'name',
-                'email',
-                'booking_date',
-                'booking_time',
-                'phone_number',
-            ],
             'properties' => [
-                'name' => ['type' => 'string'],
-                'email' => ['type' => 'string'],
-                'booking_date' => ['type' => 'string'],
-                'booking_time' => ['type' => 'string'],
-                'phone_number' => ['type' => 'string'],
+                'status' => ['type' => 'string'],
+                'date' => ['type' => 'string'], // YYYY-MM-DD
+                'limit' => ['type' => 'number'],
             ],
         ];
     }
@@ -42,23 +33,17 @@ class Book extends Tool
     public function outputSchema(): array
     {
         return [
-            'type' => 'object',
-            'properties' => [
-                'id' => ['type' => 'number'],
-                'status' => ['type' => 'string'],
-            ],
+            'type' => 'array',
+            'items' => ['type' => 'object'],
         ];
     }
 
-    /**
-     * WRITE handle (controlled)
-     */
     public function handle(array $input): mixed
     {
         $validator = Validator::make($input, [
             'name' => 'required|string|max:255',
             'email' => 'required|email',
-            'booking_date' => 'required|date',
+            'booking_date' => 'required|date|after_or_equal:today',
             'booking_time' => 'required',
             'phone_number' => 'required|string|max:20',
         ]);
@@ -75,6 +60,12 @@ class Book extends Tool
             abort(409, 'Time slot already booked');
         }
 
+        $dailyCount = Booking::whereDate('booking_date', $input['booking_date'])->count();
+
+        if ($dailyCount >= 20) {
+            abort(429, 'Daily booking limit reached');
+        }
+
         $booking = Booking::create([
             'name' => $input['name'],
             'email' => $input['email'],
@@ -89,4 +80,5 @@ class Book extends Tool
             'status' => $booking->status,
         ];
     }
+
 }

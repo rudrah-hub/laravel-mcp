@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Mcp\ToolRegistry;
-use Illuminate\Http\Request;
 
-class BookingController extends Controller
+use Illuminate\Http\Request;
+use App\Mcp\ToolRegistry;
+
+class MCPController extends Controller
 {
     public function tools()
     {
@@ -20,13 +21,23 @@ class BookingController extends Controller
 
     public function call(Request $request, string $tool)
     {
-        $toolInstance = collect(ToolRegistry::all())
+        $instance = collect(ToolRegistry::all())
             ->first(fn ($t) => $t->name() === $tool);
 
-        abort_if(!$toolInstance, 404);
+        abort_if(!$instance, 404);
+
+        if ($instance instanceof AuthorizableTool) {
+            abort_if(!$instance->authorize(), 403);
+        }
+
+        \Log::info('MCP tool called', [
+            'tool' => $tool,
+            'input' => $request->all()
+        ]);
 
         return response()->json(
-            $toolInstance->handle($request->all())
+            $instance->handle($request->all())
         );
     }
 }
+

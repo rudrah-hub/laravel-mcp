@@ -50,9 +50,6 @@ class Book extends Tool
         ];
     }
 
-    /**
-     * WRITE handle (controlled)
-     */
     public function handle(array $input): mixed
     {
         $validator = Validator::make($input, [

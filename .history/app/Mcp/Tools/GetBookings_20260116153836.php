@@ -40,30 +40,34 @@ class GetBookings extends Tool
 
     public function handle(array $input): mixed
     {
-        $query = Booking::query();
 
-        if (!empty($input['status'])) {
-            $query->where('status', $input['status']);
+        $exists = Booking::where('booking_date', $input['booking_date'])
+            ->where('booking_time', $input['booking_time'])
+            ->exists();
+
+        if ($exists) {
+            abort(409, 'Time slot already booked');
         }
 
-        if (!empty($input['date'])) {
-            $query->whereDate('booking_date', $input['date']);
+        $dailyCount = Booking::whereDate('booking_date', $input['booking_date'])->count();
+
+        if ($dailyCount >= 20) {
+            abort(429, 'Daily booking limit reached');
         }
 
-        $limit = $input['limit'] ?? 10;
+        $booking = Booking::create([
+            'name' => $input['name'],
+            'email' => $input['email'],
+            'booking_date' => $input['booking_date'],
+            'booking_time' => $input['booking_time'],
+            'phone_number' => $input['phone_number'],
+            'status' => 'pending',
+        ]);
 
-        return $query
-            ->latest('booking_date')
-            ->limit(min($limit, 50)) // hard safety cap
-            ->get([
-                'id',
-                'name',
-                'email',
-                'booking_date',
-                'booking_time',
-                'phone_number',
-                'status',
-            ]);
+        return [
+            'id' => $booking->id,
+            'status' => $booking->status,
+        ];
     }
 
 }

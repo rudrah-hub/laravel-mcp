@@ -6,37 +6,21 @@ use App\Mcp\Tool;
 use App\Models\Booking;
 use Illuminate\Support\Facades\Validator;
 
-class Book extends Tool
+class DeleteBooking extends Tool
 {
     public function name(): string
     {
-        return 'create_booking';
+        return 'delete_booking';
     }
 
     public function description(): string
     {
-        return 'Create a new booking';
+        return 'Delete an existing booking';
     }
 
     public function inputSchema(): array
     {
-        return [
-            'type' => 'object',
-            'required' => [
-                'name',
-                'email',
-                'booking_date',
-                'booking_time',
-                'phone_number',
-            ],
-            'properties' => [
-                'name' => ['type' => 'string'],
-                'email' => ['type' => 'string'],
-                'booking_date' => ['type' => 'string'],
-                'booking_time' => ['type' => 'string'],
-                'phone_number' => ['type' => 'string'],
-            ],
-        ];
+
     }
 
     public function outputSchema(): array

@@ -1,12 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Mcp\ToolRegistry;
+
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
 {
-    public function tools()
+     public function tools()
     {
         return response()->json([
             'tools' => collect(ToolRegistry::all())->map(fn ($tool) => [

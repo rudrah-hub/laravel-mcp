@@ -10,12 +10,12 @@ class Book extends Tool
 {
     public function name(): string
     {
-        return 'create_booking';
+        return 'edit_booking';
     }
 
     public function description(): string
     {
-        return 'Create a new booking';
+        return 'Edit an existing booking';
     }
 
     public function inputSchema(): array
@@ -63,27 +63,21 @@ class Book extends Tool
             'phone_number' => 'required|string|max:20',
         ]);
 
+
         if ($validator->fails()) {
             abort(422, $validator->errors()->first());
         }
 
-        $exists = Booking::where('booking_date', $input['booking_date'])
-            ->where('booking_time', $input['booking_time'])
-            ->exists();
-
-        if ($exists) {
-            abort(409, 'Time slot already booked');
+        $booking = Booking::find($input['id']);
+        if (!$booking) {
+            abort(404, 'Booking not found');
         }
-
-        $booking = Booking::create([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'booking_date' => $input['booking_date'],
-            'booking_time' => $input['booking_time'],
-            'phone_number' => $input['phone_number'],
-            'status' => 'pending',
-        ]);
-
+        $booking->name = $input['name'];
+        $booking->email = $input['email'];
+        $booking->booking_date = $input['booking_date'];
+        $booking->booking_time = $input['booking_time'];
+        $booking->phone_number = $input['phone_number'];
+        $booking->save();
         return [
             'id' => $booking->id,
             'status' => $booking->status,

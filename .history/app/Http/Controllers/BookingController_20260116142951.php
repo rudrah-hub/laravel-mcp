@@ -1,8 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Mcp\ToolRegistry;
+
 use Illuminate\Http\Request;
+use App\Mcp\ToolRegistry;
 
 class BookingController extends Controller
 {

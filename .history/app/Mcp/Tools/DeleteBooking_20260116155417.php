@@ -6,7 +6,7 @@ use App\Mcp\Tool;
 use App\Models\Booking;
 use Illuminate\Support\Facades\Validator;
 
-class Book extends Tool
+class DeleteBooking extends Tool
 {
     public function name(): string
     {

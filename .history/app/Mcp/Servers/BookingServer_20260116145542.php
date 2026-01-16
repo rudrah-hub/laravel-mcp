@@ -3,6 +3,9 @@
 namespace App\Mcp\Servers;
 
 use Laravel\Mcp\Server;
+use App\Mcp\Prompts\BookingAgentPrompt;
+use App\Mcp\Resources\BookingRulesResource;
+
 
 class booking extends Server
 {
@@ -37,7 +40,7 @@ class booking extends Server
      * @var array<int, class-string<\Laravel\Mcp\Server\Resource>>
      */
     protected array $resources = [
-        //
+        BookingRulesResource::class,
     ];
 
     /**
@@ -46,6 +49,6 @@ class booking extends Server
      * @var array<int, class-string<\Laravel\Mcp\Server\Prompt>>
      */
     protected array $prompts = [
-        //
+        BookingAgentPrompt::class,
     ];
 }

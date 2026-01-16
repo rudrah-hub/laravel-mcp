@@ -1,10 +1,10 @@
 <?php
-
 namespace App\Http\Controllers;
-use App\Mcp\ToolRegistry;
+
+use App\MCP\ToolRegistry;
 use Illuminate\Http\Request;
 
-class BookingController extends Controller
+class MCPController extends Controller
 {
     public function tools()
     {

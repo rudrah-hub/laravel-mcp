@@ -50,11 +50,10 @@ class Book extends Tool
         ];
     }
 
-    /**
-     * WRITE handle (controlled)
-     */
     public function handle(array $input): mixed
     {
+        Gate::authorize('create-booking');
+
         $validator = Validator::make($input, [
             'name' => 'required|string|max:255',
             'email' => 'required|email',

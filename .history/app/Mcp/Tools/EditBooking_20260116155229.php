@@ -10,12 +10,12 @@ class Book extends Tool
 {
     public function name(): string
     {
-        return 'create_booking';
+        return 'edit_booking';
     }
 
     public function description(): string
     {
-        return 'Create a new booking';
+        return 'Edit an existing booking';
     }
 
     public function inputSchema(): array
