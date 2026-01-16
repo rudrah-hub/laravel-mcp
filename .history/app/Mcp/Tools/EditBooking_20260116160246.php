@@ -50,6 +50,9 @@ class EditBooking extends Tool
         ];
     }
 
+    /**
+     * WRITE handle (controlled)
+     */
     public function handle(array $input): mixed
     {
         $validator = Validator::make($input, [
@@ -58,6 +61,7 @@ class EditBooking extends Tool
             'booking_date' => 'date',
             'phone_number' => 'string|max:20',
         ]);
+
 
         if ($validator->fails()) {
             abort(422, $validator->errors()->first());
@@ -74,18 +78,22 @@ class EditBooking extends Tool
             $booking->name = $input['name'];
         }
         if(isset($input['email'])) {
-            $booking->email = $input['email'];
+            $booking->status = $input['email'];
         }
-        if(isset($input['booking_date'])) {
-            $booking->booking_date = $input['booking_date'];
+        if(isset($input['status'])) {
+            $booking->status = $input['status'];
         }
-        if(isset($input['booking_time'])) {
-            $booking->booking_time = $input['booking_time'];
+        if(isset($input['status'])) {
+            $booking->status = $input['status'];
         }
-        if(isset($input['phone_number'])) {
-            $booking->phone_number = $input['phone_number'];
+        if(isset($input['status'])) {
+            $booking->status = $input['status'];
         }
-
+        $booking->name = $input['name'];
+        $booking->email = $input['email'];
+        $booking->booking_date = $input['booking_date'];
+        $booking->booking_time = $input['booking_time'];
+        $booking->phone_number = $input['phone_number'];
         $booking->save();
         return [
             'id' => $booking->id,

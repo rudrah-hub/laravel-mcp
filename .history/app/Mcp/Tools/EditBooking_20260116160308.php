@@ -50,6 +50,9 @@ class EditBooking extends Tool
         ];
     }
 
+    /**
+     * WRITE handle (controlled)
+     */
     public function handle(array $input): mixed
     {
         $validator = Validator::make($input, [
@@ -58,6 +61,7 @@ class EditBooking extends Tool
             'booking_date' => 'date',
             'phone_number' => 'string|max:20',
         ]);
+
 
         if ($validator->fails()) {
             abort(422, $validator->errors()->first());
