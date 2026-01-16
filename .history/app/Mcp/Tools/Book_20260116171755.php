@@ -2,10 +2,10 @@
 
 namespace App\Mcp\Tools;
 
+use App\Mcp\Tool;
 use Laravel\Mcp\Server\Tool;
 use App\Models\Booking;
 use Illuminate\Support\Facades\Validator;
-
 
 class Book extends Tool
 {
@@ -40,6 +40,20 @@ class Book extends Tool
         ];
     }
 
+    public function outputSchema(): array
+    {
+        return [
+            'type' => 'object',
+            'properties' => [
+                'id' => ['type' => 'number'],
+                'status' => ['type' => 'string'],
+            ],
+        ];
+    }
+
+    /**
+     * WRITE handle (controlled)
+     */
     public function handle(array $input): mixed
     {
         $validator = Validator::make($input, [

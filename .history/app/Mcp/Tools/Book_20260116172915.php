@@ -5,6 +5,7 @@ namespace App\Mcp\Tools;
 use Laravel\Mcp\Server\Tool;
 use App\Models\Booking;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\JsonSchema\JsonSchema;
 
 
 class Book extends Tool
@@ -36,6 +37,18 @@ class Book extends Tool
                 'booking_date' => ['type' => 'string'],
                 'booking_time' => ['type' => 'string'],
                 'phone_number' => ['type' => 'string'],
+            ],
+        ];
+    }
+
+    public static function outputSchema(JsonSchema $schema): array
+
+    {
+        return [
+            'type' => 'object',
+            'properties' => [
+                'id' => ['type' => 'number'],
+                'status' => ['type' => 'string'],
             ],
         ];
     }

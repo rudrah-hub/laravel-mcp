@@ -2,7 +2,7 @@
 
 namespace App\Mcp\Tools;
 
-use Laravel\Mcp\Server\Tool;
+use App\Mcp\Tool;
 use App\Models\Booking;
 use Illuminate\Support\Facades\Validator;
 
@@ -35,6 +35,17 @@ class EditBooking extends Tool
                 'booking_date' => ['type' => 'string'],
                 'booking_time' => ['type' => 'string'],
                 'phone_number' => ['type' => 'string'],
+            ],
+        ];
+    }
+
+    public function outputSchema(): array
+    {
+        return [
+            'type' => 'object',
+            'properties' => [
+                'id' => ['type' => 'number'],
+                'status' => ['type' => 'string'],
             ],
         ];
     }

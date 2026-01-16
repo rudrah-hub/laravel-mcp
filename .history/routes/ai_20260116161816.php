@@ -3,4 +3,4 @@
 use Laravel\Mcp\Facades\Mcp;
 use App\Mcp\Servers\Booking;
 
-Mcp::web('/mcp/booking', Booking::class);
+Mcp::web('/booking', Booking::class);

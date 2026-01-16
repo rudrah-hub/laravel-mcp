@@ -2,21 +2,20 @@
 
 namespace App\Mcp\Tools;
 
-use Laravel\Mcp\Server\Tool;
+use App\Mcp\Tool;
 use App\Models\Booking;
 use Illuminate\Support\Facades\Validator;
 
-
-class Book extends Tool
+class EditBooking extends Tool
 {
     public function name(): string
     {
-        return 'create_booking';
+        return 'edit_booking';
     }
 
     public function description(): string
     {
-        return 'Create a new booking';
+        return 'Edit an existing booking';
     }
 
     public function inputSchema(): array
@@ -43,34 +42,40 @@ class Book extends Tool
     public function handle(array $input): mixed
     {
         $validator = Validator::make($input, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'booking_date' => 'required|date',
-            'booking_time' => 'required',
-            'phone_number' => 'required|string|max:20',
+            'name' => 'string|max:255',
+            'email' => 'email',
+            'booking_date' => 'date',
+            'phone_number' => 'string|max:20',
         ]);
 
         if ($validator->fails()) {
             abort(422, $validator->errors()->first());
         }
 
-        $exists = Booking::where('booking_date', $input['booking_date'])
-            ->where('booking_time', $input['booking_time'])
-            ->exists();
-
-        if ($exists) {
-            abort(409, 'Time slot already booked');
+        $booking = Booking::find($input['id']);
+        if (!$booking) {
+            abort(404, 'Booking not found');
+        }
+        if(isset($input['status'])) {
+            $booking->status = $input['status'];
+        }
+        if(isset($input['name'])) {
+            $booking->name = $input['name'];
+        }
+        if(isset($input['email'])) {
+            $booking->email = $input['email'];
+        }
+        if(isset($input['booking_date'])) {
+            $booking->booking_date = $input['booking_date'];
+        }
+        if(isset($input['booking_time'])) {
+            $booking->booking_time = $input['booking_time'];
+        }
+        if(isset($input['phone_number'])) {
+            $booking->phone_number = $input['phone_number'];
         }
 
-        $booking = Booking::create([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'booking_date' => $input['booking_date'],
-            'booking_time' => $input['booking_time'],
-            'phone_number' => $input['phone_number'],
-            'status' => 'pending',
-        ]);
-
+        $booking->save();
         return [
             'id' => $booking->id,
             'status' => $booking->status,

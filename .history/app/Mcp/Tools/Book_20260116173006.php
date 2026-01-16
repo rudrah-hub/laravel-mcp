@@ -5,6 +5,7 @@ namespace App\Mcp\Tools;
 use Laravel\Mcp\Server\Tool;
 use App\Models\Booking;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\JsonSchema\JsonSchema;
 
 
 class Book extends Tool
@@ -38,6 +39,13 @@ class Book extends Tool
                 'phone_number' => ['type' => 'string'],
             ],
         ];
+    }
+
+    public static function outputSchema(JsonSchema $schema): array
+    {
+        return $schema->object([
+            'id' => $schema->integer(),
+        ]);
     }
 
     public function handle(array $input): mixed

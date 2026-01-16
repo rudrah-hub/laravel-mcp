@@ -2,7 +2,7 @@
 
 namespace App\Mcp\Tools;
 
-use Laravel\Mcp\Server\Tool;
+use App\Mcp\Tool;
 use App\Models\Booking;
 use Illuminate\Support\Facades\Validator;
 

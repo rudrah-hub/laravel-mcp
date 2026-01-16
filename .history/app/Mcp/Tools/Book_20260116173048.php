@@ -40,6 +40,17 @@ class Book extends Tool
         ];
     }
 
+    public function outputSchema(): array
+    {
+        return [
+            'type' => 'object',
+            'properties' => [
+                'id' => ['type' => 'number'],
+                'status' => ['type' => 'string'],
+            ],
+        ];
+    }
+
     public function handle(array $input): mixed
     {
         $validator = Validator::make($input, [

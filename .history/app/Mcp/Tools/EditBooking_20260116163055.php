@@ -2,7 +2,7 @@
 
 namespace App\Mcp\Tools;
 
-use Laravel\Mcp\Server\Tool;
+use App\Mcp\Tool;
 use App\Models\Booking;
 use Illuminate\Support\Facades\Validator;
 
@@ -35,6 +35,20 @@ class EditBooking extends Tool
                 'booking_date' => ['type' => 'string'],
                 'booking_time' => ['type' => 'string'],
                 'phone_number' => ['type' => 'string'],
+            ],
+        ];
+    }
+curl -X POST http://127.0.0.1:8000/mcp/booking \
+  -H "Content-Type: application/json" \
+  --data-binary '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}'
+
+    public function outputSchema(): array
+    {
+        return [
+            'type' => 'object',
+            'properties' => [
+                'id' => ['type' => 'number'],
+                'status' => ['type' => 'string'],
             ],
         ];
     }
